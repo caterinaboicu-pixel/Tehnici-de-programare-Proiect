@@ -1,5 +1,4 @@
-# Laborator: funcții, metode și importuri pe web
-# Student: Boicu Ecaterina
+
 """webtools - modulul propriu cu funcțiile reutilizabile pentru analiza unui site."""
 
 import csv
@@ -17,7 +16,7 @@ BASE_URL = "https://cybercor.org"
 ECHO_URL = "https://httpbin.org"
 TIMEOUT = 10  # secunde
 
-# Ex. 47: constantă de modul, folosită în fetch()
+
 DEFAULT_HEADERS = {"User-Agent": "WebLab-Boicu_Ecaterina"}
 
 SECURITY_HEADERS = [
@@ -29,7 +28,7 @@ SECURITY_HEADERS = [
 ]
 
 
-# ------------------------------------------------------- Ex. 44: funcțiile mutate
+
 def fetch(url: str, timeout: int = TIMEOUT) -> requests.Response:
     """Descarcă url cu GET (cu User-Agent personalizat) și returnează răspunsul."""
     return requests.get(url, headers=DEFAULT_HEADERS, timeout=timeout)
@@ -56,7 +55,7 @@ def security_headers(url: str) -> dict:
     return {name: name in response.headers for name in SECURITY_HEADERS}
 
 
-# ----------------------------------------------- funcții folosite de site_report
+
 def score_headers(results: dict) -> str:
     """Primește rezultatul lui security_headers și returnează scorul, ex. '3/5'."""
     return f"{sum(results.values())}/{len(results)}"
@@ -141,7 +140,7 @@ def redirect_chain(hostname: str) -> list:
     return [f"{hop.status_code} -> {nxt}" for hop, nxt in zip(response.history, urls[1:])]
 
 
-# --------------------------------------------------------- Ex. 49: raport CSV
+
 def save_csv(results: dict, filename: str = "report.csv") -> None:
     """Salvează rezultatul lui check_paths în CSV, cu coloanele path, status, checked_at."""
     with open(filename, "w", newline="", encoding="utf-8") as file:
@@ -151,7 +150,7 @@ def save_csv(results: dict, filename: str = "report.csv") -> None:
             writer.writerow([path, status, datetime.now().isoformat()])
 
 
-# ------------------------------------------------- Ex. 50: proiectul final
+
 def site_report(url: str, filename: str = "report.json") -> dict:
     """Colectează, afișează și salvează în report.json raportul complet despre site."""
     hostname = urlparse(url).hostname
@@ -201,9 +200,5 @@ def site_report(url: str, filename: str = "report.json") -> dict:
     print(f"Salvat în {filename}")
     return report
 
-
-# ------------------------------------------------------------ Ex. 46: blocul main
 if __name__ == "__main__":
-    # Se execută DOAR când rulăm "python webtools.py" (atunci __name__ == "__main__").
-    # La "import webtools" din main.py, __name__ este "webtools", deci blocul se sare.
     print("Autotest:", get_status("https://cybercor.org"))
