@@ -1,8 +1,3 @@
-# Laborator: funcții, metode și importuri pe web
-# Student: Boicu Ecaterina
-#
-# Rulare:  python part3_functions.py        -> rulează toate exercițiile 21-34
-#          python part3_functions.py 27     -> rulează doar exercițiul 27
 
 import sys
 import time
@@ -30,20 +25,20 @@ def run(n, title=""):
     return True
 
 
-# ------------------------------------------------ Ex. 21 + Ex. 23 (timeout)
+
 def fetch(url: str, timeout: int = 10) -> requests.Response:
     """Descarcă url cu GET și returnează obiectul răspuns (timeout implicit 10 s)."""
     return requests.get(url, timeout=timeout)
 
 
-# ------------------------------------------------------------------ Ex. 22
+
 def get_status(url: str) -> int:
     """Returnează codul de stare HTTP pentru adresa url."""
     response = requests.get(url, timeout=TIMEOUT)
     return response.status_code
 
 
-# ------------------------------------------------ Ex. 24 + Ex. 25 (docstring)
+
 def get_title(html: str) -> str:
     """Returnează titlul paginii (textul dintre <title> și </title>).
 
@@ -58,7 +53,7 @@ def get_title(html: str) -> str:
     return html[start:end].strip()
 
 
-# ------------------------------------------------------------------ Ex. 27
+
 def page_exists(url: str) -> bool:
     """Returnează True dacă pagina răspunde cu un cod sub 400, altfel False.
 
@@ -71,7 +66,7 @@ def page_exists(url: str) -> bool:
         return False
 
 
-# ------------------------------------------------------------------ Ex. 28
+
 def check_paths(base: str, paths: list) -> dict:
     """Returnează un dicționar {cale: cod_de_stare} pentru fiecare cale din paths.
 
@@ -88,27 +83,26 @@ def check_paths(base: str, paths: list) -> dict:
     return results
 
 
-# ------------------------------------------------------------------ Ex. 29
+
 def get_header(url: str, name: str, default: str = "lipsește") -> str:
     """Returnează valoarea antetului name pentru url, sau default dacă lipsește."""
     response = requests.get(url, timeout=TIMEOUT)
     return response.headers.get(name, default)
 
 
-# ------------------------------------------------------------------ Ex. 30
+
 def security_headers(url: str) -> dict:
     """Returnează {antet: True/False} pentru cele 5 antete de securitate."""
     response = requests.get(url, timeout=TIMEOUT)
     return {name: name in response.headers for name in SECURITY_HEADERS}
 
 
-# ------------------------------------------------------------------ Ex. 31
-def score_headers(results: dict) -> str:
+
     """Primește dicționarul din security_headers și returnează un scor, ex. '3/5'."""
     return f"{sum(results.values())}/{len(results)}"
 
 
-# ------------------------------------------------------------------ Ex. 32
+
 def fetch_robots(base: str):
     """Returnează textul fișierului /robots.txt sau None dacă lipsește."""
     try:
@@ -134,7 +128,7 @@ def disallowed_paths(robots_text) -> list:
     return paths
 
 
-# ------------------------------------------------------------------ Ex. 33
+
 def response_times(*urls: str) -> dict:
     """Returnează {url: secunde} pentru oricâte adrese primește."""
     times = {}
@@ -147,14 +141,14 @@ def response_times(*urls: str) -> dict:
     return times
 
 
-# ------------------------------------------------------------------ Ex. 34
+
 def log(message: str, **details) -> None:
     """Afișează mesajul urmat de fiecare detaliu, în forma: mesaj | cheie=valoare."""
     parts = [message] + [f"{key}={value}" for key, value in details.items()]
     print(" | ".join(parts))
 
 
-# =============================================================== APELURI
+
 if run(21, "Prima funcție"):
     response = fetch(BASE_URL)
     print("Cod de stare:", response.status_code)
@@ -170,8 +164,8 @@ if run(23, "Parametri impliciți"):
     print("timeout=3:", fetch(BASE_URL, timeout=3).status_code)
 
 if run(24, "O singură sarcină pe funcție"):
-    html = fetch(BASE_URL).text  # rețeaua: într-o funcție
-    print("Titlu:", get_title(html))  # analiza: în altă funcție
+    html = fetch(BASE_URL).text  
+    print("Titlu:", get_title(html))  
     print("Test fără rețea:", get_title("<html><title> Test </title></html>"))
 
 if run(25, "Docstring-uri"):
@@ -182,9 +176,7 @@ if run(26, "Adnotări de tip"):
         print(get_status(123))
     except Exception as error:
         print("Eroare:", type(error).__name__, "-", error)
-    # Adnotările de tip (url: str) sunt doar indicii pentru programatori și
-    # editoare: Python NU le verifică la rulare, deci nu ne opresc să trimitem
-    # un număr în loc de șir. Eroarea apare abia în requests (URL invalid).
+
 
 if run(27, "Fără opriri neașteptate"):
     print(BASE_URL, "->", page_exists(BASE_URL))
@@ -217,9 +209,3 @@ if run(33, "Oricâte argumente"):
 if run(34, "Argumente cu nume colectate"):
     log("verificat", url=BASE_URL, status=200)
 
-# ----------------------------------------------------- Întrebare de verificare
-# print() în interiorul unei funcții doar AFIȘEAZĂ valoarea pe ecran; apelantul
-# nu o poate folosi mai departe (funcția returnează None). return trimite
-# valoarea înapoi apelantului, care o poate stoca, testa sau transmite altei
-# funcții (de ex. score_headers(security_headers(...))). Funcțiile care
-# returnează sunt reutilizabile; cele care doar afișează, nu.
