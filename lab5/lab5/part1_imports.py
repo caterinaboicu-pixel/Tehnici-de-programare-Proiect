@@ -1,5 +1,3 @@
-
-
 import inspect
 import sys
 import time
@@ -74,7 +72,6 @@ if run(6, "Citiți documentația"):
     print("Cerere cu timeout=", TIMEOUT, "-> cod de stare:", response.status_code)
     time.sleep(1)
 
-# ---------------------------------------------------------------- Ex. 7
 if run(7, "Cronometrarea unei cereri"):
     start = time.perf_counter()
     response = requests.get(BASE_URL, timeout=TIMEOUT)
@@ -90,7 +87,3 @@ if run(8, "Când un import eșuează"):
         print("bs4 este instalat, versiunea:", bs4.__version__)
     except ImportError:
         print("Instalați modulul cu: pip install beautifulsoup4")
-
-#            de ex. urllib (urllib.request, urllib.parse).
-# Bibliotecă = termen general: o colecție de module/pachete cu un scop comun,
-#            de ex. requests sau biblioteca standard Python.
