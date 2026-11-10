@@ -1,8 +1,3 @@
-# Laborator: funcții, metode și importuri pe web
-# Student: Boicu Ecaterina
-#
-# Rulare:  python part4_modules.py        -> rulează toate exercițiile 35-43
-#          python part4_modules.py 39     -> rulează doar exercițiul 39
 
 import hashlib
 import json
@@ -40,7 +35,7 @@ def page_html(url: str) -> str:
     return _cache[url]
 
 
-# ------------------------------------------------------------------ Ex. 35
+
 def describe_url(url: str) -> None:
     """Descompune url cu urlparse și afișează fiecare componentă."""
     parts = urllib.parse.urlparse(url)
@@ -51,20 +46,20 @@ def describe_url(url: str) -> None:
     print("fragment:", parts.fragment)
 
 
-# ------------------------------------------------------------------ Ex. 36
+
 def make_absolute(base: str, links: list) -> list:
     """Transformă legăturile relative în URL-uri complete, pornind de la base."""
     return [urllib.parse.urljoin(base, link) for link in links]
 
 
-# ------------------------------------------------------------------ Ex. 37
+
 def extract_links(html: str) -> list:
     """Returnează legăturile (href) din html, fără duplicate, în ordinea apariției."""
     links = re.findall(r'href="([^"]+)"', html)
     return list(dict.fromkeys(links))
 
 
-# ------------------------------------------------------------------ Ex. 38
+
 def split_links(links: list, domain: str):
     """Împarte legăturile în (interne, externe) față de domain (ex. 'cybercor.org').
 
@@ -86,7 +81,7 @@ def split_links(links: list, domain: str):
     return internal, external
 
 
-# ------------------------------------------------------------------ Ex. 39
+
 class ImageFinder(HTMLParser):
     """Parser HTML care colectează atributul src al fiecărui tag <img>."""
 
@@ -103,14 +98,13 @@ class ImageFinder(HTMLParser):
                 self.images.append(src)
 
 
-# ------------------------------------------------------------------ Ex. 40
-def page_fingerprint(url: str) -> str:
+
     """Returnează amprenta SHA-256 (hexazecimal) a conținutului paginii url."""
     response = requests.get(url, timeout=TIMEOUT)
     return hashlib.sha256(response.content).hexdigest()
 
 
-# ------------------------------------------------------------------ Ex. 41
+
 def save_headers(url: str, filename: str = "headers.json") -> dict:
     """Salvează antetele paginii url în filename (JSON) și returnează ce s-a salvat."""
     response = requests.get(url, timeout=TIMEOUT)
@@ -120,13 +114,13 @@ def save_headers(url: str, filename: str = "headers.json") -> dict:
         return json.load(file)
 
 
-# ------------------------------------------------------------------ Ex. 42
+
 def resolve(hostname: str) -> str:
     """Returnează adresa IP a domeniului hostname (interogare DNS)."""
     return socket.gethostbyname(hostname)
 
 
-# ------------------------------------------------------------------ Ex. 43
+
 def cert_days_left(hostname: str) -> int:
     """Returnează câte zile mai sunt până la expirarea certificatului lui hostname."""
     context = ssl.create_default_context()
@@ -137,7 +131,7 @@ def cert_days_left(hostname: str) -> int:
     return (expires - datetime.now(timezone.utc)).days
 
 
-# =============================================================== APELURI
+
 if run(35, "Descompunerea unui URL"):
     describe_url("https://cybercor.org/path?x=1#top")
 
@@ -196,10 +190,7 @@ if run(40, "Amprenta paginii"):
     print("Prima:  ", first)
     print("A doua: ", second)
     print("Identice:", first == second)
-    # Amprentele ar fi diferite dacă pagina s-a modificat între cereri: conținut
-    # dinamic (dată/oră, contor de vizite, token CSRF, reclame, recomandări) sau
-    # dacă administratorul a actualizat pagina. Chiar și un singur octet diferit
-    # schimbă complet hash-ul SHA-256.
+  
 
 if run(41, "Salvarea în JSON"):
     data = save_headers(BASE_URL)
@@ -212,10 +203,3 @@ if run(42, "Interogare DNS"):
 
 if run(43, "Expirarea certificatului"):
     print("Zile rămase până la expirarea certificatului:", cert_days_left("cybercor.org"))
-
-# ----------------------------------------------------- Întrebare de verificare
-# handle_starttag() este apelată de PARSER, nu de noi: când apelăm feed(html),
-# HTMLParser parcurge textul și, la fiecare tag de deschidere întâlnit, apelează
-# automat metoda handle_starttag(tag, attrs). Noi doar o suprascriem (override)
-# ca să spunem ce să se întâmple - este principiul "callback" / "nu ne sunați,
-# vă sunăm noi" (inversiunea controlului).
